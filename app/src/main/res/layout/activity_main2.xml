@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Bienvenue \n Sur\n FarmApp "
+        android:textAlignment="center"
+        android:textColor="#DAD5D5"
+        android:textSize="80sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Votre application \nde gestion de ferme à distance"
+        android:textAlignment="center"
+        android:textColor="#DAD5D5"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="413dp"
+        android:layout_height="225dp"
+        android:src="@drawable/bottom_background" />
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:background="@drawable/bouton"
+        android:text="MENU"
+        android:textColor="@color/black" />
+
+</LinearLayout>
