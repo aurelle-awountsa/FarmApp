@@ -28,12 +28,13 @@ void setup() {
     Serial.print(".");
     delay(500);
     }
-    Serial.println();
+  Serial.println();
   Serial.print("connected: ");
   Serial.println(WiFi.localIP());
+   
   //Connexion à la base de données
-  
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+
   
   //initiation des données dans la base de données
   
