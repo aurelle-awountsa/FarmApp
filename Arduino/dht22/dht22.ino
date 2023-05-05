@@ -2,10 +2,10 @@
 #include "DHT.h";
 #include <FirebaseArduino.h>;
 
-#define FIREBASE_HOST "myfarmapp-ac116-default-rtdb.firebaseio.com"   // lien qui mène vers notre base de données
-#define FIREBASE_AUTH "pdWTG1xIJqeB3faEzLqoF5M2hjH0LdSTOAgkYD1p"      // système d'authentification avec les jettons (jetton propre à la db)
-#define WIFI_SSID "tilly's Galaxy S22"  //remplacer le nom par le nom du wifi auqudel on veut connecter l'esp8266
-#define WIFI_PASSWORD "oych2358"         //remplacer le mot de passe par le mot de passe du wifi auqudel on veut connecter l'esp8266
+#define FIREBASE_HOST "LIEN VERS LA DB"   // lien qui mène vers notre base de données
+#define FIREBASE_AUTH "CODE SECRET DE LA RTDB"      // système d'authentification avec les jettons (jetton propre à la db)
+#define WIFI_SSID "NOM WIFI"  //remplacer le nom par le nom du wifi auqudel on veut connecter l'esp8266
+#define WIFI_PASSWORD "MDP WIFI"         //remplacer le mot de passe par le mot de passe du wifi auqudel on veut connecter l'esp8266
 #define DHTTYPE DHT22 
 #define DHTPIN D2    
 
