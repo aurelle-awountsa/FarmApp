@@ -9,13 +9,13 @@
 #define echoPin D8
 long duration;
 int distance;
-int water = 100;
-int jour = 5;
-/* 100 => 5jouurs
-    distance => x jours*/
-int x ;
+int hauteur_recipient = 100; //metre
+int quantité = 100; //litre
+/* 100m => 100L
+    distance => x l*/
+int x ; //nombre de litre restant
 String str1 = "la quantité d'eau restante correspond à ";
-String str2 = " jours." ;
+String str2 = " Litres." ;
 const unsigned long MEASURE_TIMEOUT = 25000UL; // 25ms = 8m à 340m/s
 const float SOUND_SPEED = 340.0 / 1000;
 
@@ -57,7 +57,7 @@ void loop() {
   // Calculating the distance
   distance= duration / 2.0 * SOUND_SPEED;
   
-  x =(distance * jour) / water;
+  x =(distance * quantité) / hauteur_recipient;
   Serial.print(x);
   // Prints the distance on the Serial Monitor
   Serial.print("Distance: ");
