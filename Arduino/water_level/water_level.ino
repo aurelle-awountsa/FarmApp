@@ -9,10 +9,11 @@
 #define echoPin D8
 long duration;
 int distance;
-int hauteur_recipient = 100; //metre
-int quantité = 100; //litre
+int hauteur_recipient = 400; //en cm
+int quantite = 40; //litre
 /* 100m => 100L
-    distance => x l*/
+    distance => x l
+    jours = x / quantité d'eau journalière*/
 int x ; //nombre de litre restant
 String str1 = "la quantité d'eau restante correspond à ";
 String str2 = " Litres." ;
@@ -35,15 +36,15 @@ void setup() {
   Serial.print("connected: ");
   Serial.println(WiFi.localIP());
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-  Firebase.setInt("distance", 0);
-  Firebase.setString("waterlevel", "");
+  Firebase.setInt("distance_eau", 0);
+  Firebase.setString("message", "");
 
 }
 void loop() {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   /*
-   * For Utlrasonic sensor distance measurement
+   * Pour la mesure du capteur de distance à ultrason
    */
   
   // Sets the trigPin on HIGH state for 10 micro seconds
@@ -51,23 +52,21 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   
-  // Reads the echoPin, returns the sound wave travel time in microseconds
+  // lire echoPin, renvoie le temps de parcours de l'onde sonore en microsecondes
+
   duration = pulseIn(echoPin, HIGH, MEASURE_TIMEOUT);
   
-  // Calculating the distance
+  // Calcul de la distance
   distance= duration / 2.0 * SOUND_SPEED;
   
-  x =(distance * quantité) / hauteur_recipient;
-  Serial.print(x);
+  x =quantite - ((distance * quantite) / hauteur_recipient);
+  
   // Prints the distance on the Serial Monitor
   Serial.print("Distance: ");
   Serial.println(distance / 10.0, 2);
-  Firebase.setInt("distance",distance);
+  Serial.println(x);
+  Firebase.setInt("distance_eau",distance);
   delay(1000);
+  Firebase.setString( "message",str1+ x +str2 );
   
-  if(distance /10.0 < 60 && distance != 0){
-    
-    Serial.println(1);
-    Firebase.setString( "presence",str1+ x +str2 );
-  }
 }
