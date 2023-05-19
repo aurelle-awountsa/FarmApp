@@ -22,6 +22,7 @@ String str2 = " jours." ;
 const unsigned long MEASURE_TIMEOUT = 25000UL; // 25ms = 8m à 340m/s
 const float SOUND_SPEED = 340.0 / 1000;
 
+
 void setup() {
   Serial.begin(115200);
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
