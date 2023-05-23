@@ -48,8 +48,6 @@ public class WaterActivity extends AppCompatActivity {
 
                 status = dataSnapshot.child("message").getValue().toString();
                 eau.setText(status);
-
-
             }
 
             @Override
