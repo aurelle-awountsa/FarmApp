@@ -1,7 +1,7 @@
 package com.example.farmapp;
 
 import static com.example.farmapp.R.id.message;
-import static com.example.farmapp.R.id.on;
+//import static com.example.farmapp.R.id.on;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +24,8 @@ import java.util.Objects;
 
 public class WaterActivity extends AppCompatActivity {
     ImageView retour;
-    Button on;
-    Button off;
+   // Button on;
+  //  Button off;
     TextView eau;
     DatabaseReference myRef;
     String status;
@@ -34,8 +34,8 @@ public class WaterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water);
 
-        on = (Button) findViewById(R.id.on);
-        off = (Button) findViewById(R.id.off);
+       // on = (Button) findViewById(R.id.on);
+       // off = (Button) findViewById(R.id.off);
         eau = (TextView) findViewById(R.id.message);
 
         myRef = FirebaseDatabase.getInstance().getReference();
@@ -58,7 +58,7 @@ public class WaterActivity extends AppCompatActivity {
 
 
 
-// Envoyer les instructions d'allumage et d'extextion à firebase
+/* Envoyer les instructions d'allumage et d'extextion à firebase
 
                 on.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -82,7 +82,7 @@ public class WaterActivity extends AppCompatActivity {
                 myRef.setValue(0);
 
             }
-        });
+        });*/
 
 
         this.retour = (ImageView) findViewById(R.id.rtr1);
