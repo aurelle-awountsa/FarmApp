@@ -5,8 +5,8 @@
 #define FIREBASE_AUTH "pdWTG1xIJqeB3faEzLqoF5M2hjH0LdSTOAgkYD1p"      // système d'authentification avec les jettons (jetton propre à la db)
 #define WIFI_SSID "tilly's Galaxy S22"  //remplacer le nom par le nom du wifi auqudel on veut connecter l'esp8266
 #define WIFI_PASSWORD "oych2358"         //remplacer le mot de passe par le mot de passe du wifi auqudel on veut connecter l'esp8266
-#define trigPin D7
-#define echoPin D8
+#define trigPin D0
+#define echoPin D1
 #define led D3
 long duration;
 int distance;
@@ -36,9 +36,14 @@ void setup() {
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
   Firebase.setInt("distance", 0);
   Firebase.setString("presence", "");
+  Firebase.set("LED_STATUS", 0);
 
 }
+
+int n = 0;
+
 void loop() {
+  n = Firebase.getInt("LED_STATUS");
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   /*
@@ -63,14 +68,19 @@ void loop() {
   Firebase.setInt("distance",distance);
   delay(1000);
   
-  if(distance /10.0 < 60 && distance != 0){
+  if(distance /10.0 < 60 && distance != 0 || n == 1){
+    Serial.println("LED ON");
     digitalWrite(led, HIGH);
+    delay(1000);
     Firebase.setString("presence",str1 + distance + str2); 
+    return;
+    
   }
   else{
-    
+    Serial.println("LED OFF");
     digitalWrite(led, LOW);
     Firebase.setString("presence","Il n'y a aucune présence par ici");
+    return;
 }
   
 }
