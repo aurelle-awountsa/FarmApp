@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <FirebaseArduino.h>
 // Données à modifier 
-#define FIREBASE_HOST "myfarmapp-ac116-default-rtdb.firebaseio.com"   // lien qui mène vers notre base de données
-#define FIREBASE_AUTH "pdWTG1xIJqeB3faEzLqoF5M2hjH0LdSTOAgkYD1p"      // système d'authentification avec les jettons (jetton propre à la db)
+#define FIREBASE_HOST "LIEN VERS LA RTDB"   // lien qui mène vers notre base de données
+#define FIREBASE_AUTH "CODE SECRET"      // système d'authentification avec les jettons (jetton propre à la db)
 #define WIFI_SSID "tilly's Galaxy S22"  //remplacer le nom par le nom du wifi auqudel on veut connecter l'esp8266
 #define WIFI_PASSWORD "oych2358"         //remplacer le mot de passe par le mot de passe du wifi auqudel on veut connecter l'esp8266
 #define trigPin D7

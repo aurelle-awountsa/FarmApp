@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,14 +22,45 @@ public class IntruderActivity extends AppCompatActivity {
     TextView intruder;
     DatabaseReference myRefIntruder;
     String statusI;
+    Button on;
+    Button off;
+    DatabaseReference myRef;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intruder);
+        off = (Button) findViewById(R.id.off);
+        on = (Button) findViewById(R.id.on);
+        myRef = FirebaseDatabase.getInstance().getReference();
         intruder = (TextView) findViewById(R.id.intrus);
 
+
+
+        on.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("BUZZER");
+
+                myRef.setValue(1);
+
+            }
+        });
+
+        off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("BUZZER");
+
+                myRef.setValue(0);
+
+            }
+        });
         this.retour = (ImageView) findViewById(R.id.rtr1);
         retour.setOnClickListener(new View.OnClickListener() {
             @Override

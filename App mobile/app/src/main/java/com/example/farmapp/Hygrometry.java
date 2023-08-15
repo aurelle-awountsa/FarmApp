@@ -65,5 +65,6 @@ public class Hygrometry extends AppCompatActivity {
             }
 
         });
+
     }
 }

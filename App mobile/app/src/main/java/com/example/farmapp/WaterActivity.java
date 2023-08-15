@@ -39,8 +39,6 @@ public class WaterActivity extends AppCompatActivity {
         eau = (TextView) findViewById(R.id.message);
 
         myRef = FirebaseDatabase.getInstance().getReference();
-
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

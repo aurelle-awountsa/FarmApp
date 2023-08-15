@@ -61,7 +61,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Votre application \nde gestion de ferme à distance"
+        android:text="Votre application \nde monitoring de ferme à distance"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textStyle="italic"

@@ -7,13 +7,13 @@
 #define WIFI_PASSWORD "oych2358"         //remplacer le mot de passe par le mot de passe du wifi auqudel on veut connecter l'esp8266
 #define trigPin D0
 #define echoPin D1
-#define led D3
+int alarm = D2;
+int led = D3;
 long duration;
 int distance;
+int distanceP;
 String str1 = "Un intrus est proche et se trouve à ";
-String str2 = " mm de la ferme";
-
-
+String str2 = " cm  de la ferme";
 const unsigned long MEASURE_TIMEOUT = 25000UL; // 25ms = 8m à 340m/s
 const float SOUND_SPEED = 340.0 / 1000;
 
@@ -22,9 +22,13 @@ void setup() {
   pinMode(trigPin, OUTPUT); // Définir la broche de déclenchement comme une sortie
   pinMode(echoPin, INPUT); // Définir la broche echoPin comme une entrée.
   pinMode(led, OUTPUT);
+  //digitalWrite(led, LOW);
+  pinMode(alarm, OUTPUT);
+ // digitalWrite(alarm, LOW);
+
+
   
-  
-// connection du esp8266 au reseau wifi assigné  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+/* connection du esp8266 au reseau wifi assigné  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);*/
   Serial.print("connecting");
   while (WiFi.status() != WL_CONNECTED) {
   Serial.print(".");
@@ -37,20 +41,26 @@ void setup() {
   Firebase.setInt("distance", 0);
   Firebase.setString("presence", "");
   Firebase.set("LED_STATUS", 0);
+  Firebase.set("BUZZER", 0);
+
 
 }
 
 int n = 0;
+int m = 0;
 
 void loop() {
   n = Firebase.getInt("LED_STATUS");
+  m = Firebase.getInt("BUZZER");
+
+  
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   /*
    * Pour la mesure de la distance par capteur ultrasonique
    */
   
-  // Sets the trigPin on HIGH state for 10 micro seconds
+  // Initaialiser l'état du  trigPin sur HIGH pour 10 micro secondes
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
@@ -59,28 +69,39 @@ void loop() {
   duration = pulseIn(echoPin, HIGH, MEASURE_TIMEOUT);
   
   // Calcul de la distance
-  distance= duration / 2.0 * SOUND_SPEED;
+  distance = duration / 2.0 * SOUND_SPEED;
   
+  Serial.println("Distance: ");
+  Serial.print(distance);
+  Serial.print("mm (");
+  Serial.print(distance/ 10.0, 2);
+  Serial.print("cm, ");
+  Serial.print(distance / 1000.0, 2);
+  Serial.println("m)");
+  Firebase.setInt("distance", distance);
+  delay(500);
   
-  // Imprimer la distance sur le moniteur série
-  Serial.print("Distance: ");
-  Serial.println(distance / 10.0, 2);// convertir en cm
-  Firebase.setInt("distance",distance);
-  delay(1000);
-  
-  if(distance /10.0 < 60 && distance != 0 || n == 1){
+  if(distance /10.0 <= 100 && distance != 0 ){
     Serial.println("LED ON");
     digitalWrite(led, HIGH);
-    delay(1000);
-    Firebase.setString("presence",str1 + distance + str2); 
+    digitalWrite(alarm, HIGH);
+    tone(alarm, 6000, 600);
+    
+    delay(500);
+    distanceP = distance/10, 2;
+    Firebase.setString("presence",str1 + distanceP + str2); 
     return;
     
   }
+  else if(m == 1){
+    digitalWrite(alarm, HIGH);
+    tone(alarm, 6000, 600);
+    }
+  
   else{
     Serial.println("LED OFF");
     digitalWrite(led, LOW);
     Firebase.setString("presence","Il n'y a aucune présence par ici");
     return;
-}
-  
+  }
 }

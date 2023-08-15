@@ -9,30 +9,86 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1efc39c2-080d-4802-a9ef-52c2fb3489e4" name="Changes" comment="">
+    <list default="true" id="63d1ce69-1a60-4e86-aebe-b9133ef4084b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/CameraActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/LightActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_camera.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_light.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/python/push.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/WaterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/WaterActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_water.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_water.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/pusher.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/FoodActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/FoodActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/Hygrometry.java" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/Hygrometry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/IntruderActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/IntruderActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/MenuActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/java/com/example/farmapp/MenuActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_food.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_food.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_hygrometry.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_hygrometry.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_intruder.xml" beforeDir="false" afterPath="$PROJECT_DIR$/App mobile/app/src/main/res/layout/activity_intruder.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arduino/HC-SR04.ino/HC-SR04.ino.ino" beforeDir="false" afterPath="$PROJECT_DIR$/Arduino/HC-SR04.ino/HC-SR04.ino.ino" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arduino/arrosage/arrosage.ino" beforeDir="false" afterPath="$PROJECT_DIR$/Arduino/arrosage/arrosage.ino" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arduino/dht22/dht22.ino" beforeDir="false" afterPath="$PROJECT_DIR$/Arduino/dht22/dht22.ino" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arduino/water_level/water_level.ino" beforeDir="false" afterPath="$PROJECT_DIR$/Arduino/water_level/water_level.ino" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Aurelle Awountsa\.android\avd\Pixel_6_Pro_API_25.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Aurelle Awountsa\.android\avd\Pixel_6_API_34.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MyFarmApp" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MyFarmApp" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MyFarmApp" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MyFarmApp" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2QBOBmndKhIJJxjyYpXQBnsR8BM" />
+  <component name="ProjectId" id="2Ta8mIAmEX4ipug66Zuou3r4Cq2" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -41,11 +97,12 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "configurable.group.tools"
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/Users/Aurelle Awountsa/AndroidStudioProjects/MyFarmApp/App mobile"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.pusher">
+  <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="MyFarmApp.app.main" />
       <option name="DEPLOY" value="true" />
@@ -95,7 +152,6 @@
         <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
         <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
         <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
-        <option name="PROFILING_MODE" value="NOT_SET" />
       </Profilers>
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
@@ -105,52 +161,27 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="pusher" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\Aurelle Awountsa\AppData\Local\Programs\Python\Python311\python.exe" />
-      <option name="SDK_NAME" value="Python 3.11" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/python" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/python/pusher.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Python.pusher" />
-    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1efc39c2-080d-4802-a9ef-52c2fb3489e4" name="Changes" comment="" />
-      <created>1684823380256</created>
+      <changelist id="63d1ce69-1a60-4e86-aebe-b9133ef4084b" name="Changes" comment="" />
+      <created>1691269996690</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1684823380256</updated>
+      <updated>1691269996690</updated>
     </task>
     <servers />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/python/pusher.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

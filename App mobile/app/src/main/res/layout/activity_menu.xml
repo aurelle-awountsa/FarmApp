@@ -20,26 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/light"
-        app:layout_constraintVertical_bias="0.137"
-        tools:ignore="DuplicateIds,MissingConstraints" />
-
-    <Button
-        android:id="@+id/light"
-        android:layout_width="170dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bouton"
-        android:text="LIGHT"
-        android:textColor="#0D5510"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/food"
-        app:layout_constraintVertical_bias="0.021"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintVertical_bias="0.163"
+        tools:ignore="DuplicateIds,MissingConstraints" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -90,10 +73,10 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.049"
+        app:layout_constraintVertical_bias="0.254"
         tools:ignore="MissingConstraints"
         tools:textAlignment="center" />
 
@@ -101,6 +84,7 @@
         android:id="@+id/hygro"
         android:layout_width="240dp"
         android:layout_height="60dp"
+        android:layout_marginBottom="96dp"
         android:background="@drawable/bouton"
         android:text="HYGROMETRY"
         android:textColor="#0D5510"
@@ -109,8 +93,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intruder"
-        app:layout_constraintVertical_bias="0.397"
+        app:layout_constraintTop_toBottomOf="@+id/camera"
+        app:layout_constraintVertical_bias="0.942"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -126,7 +110,7 @@
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/water"
-        app:layout_constraintVertical_bias="0.078"
+        app:layout_constraintVertical_bias="0.127"
         tools:ignore="MissingConstraints" />
 
     <ImageView
@@ -138,7 +122,7 @@
         tools:layout_editor_absoluteX="26dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <Button
+    <!--<Button
         android:id="@+id/intruder"
         android:layout_width="240dp"
         android:layout_height="60dp"
@@ -151,7 +135,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/camera"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintVertical_bias="0.189" /> -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

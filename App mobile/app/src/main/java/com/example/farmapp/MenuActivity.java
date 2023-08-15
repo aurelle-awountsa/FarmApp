@@ -25,6 +25,9 @@ public class MenuActivity extends AppCompatActivity {
     private Button light;
     private Button hygrometry;
     private Button intruder;
+    private Button camera;
+
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,6 +46,15 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
+        this.camera = (Button) findViewById(R.id.camera) ;
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent  cameraActivity = new Intent(getApplicationContext(),  CameraActivity.class);
+                startActivity(cameraActivity);
+                finish();
+            }
+        });
 
         this.food = (Button) findViewById(R.id.food) ;
         food.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +65,16 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+/*
         this.light = (Button) findViewById(R.id.light) ;
+        light.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent  lightActivity = new Intent(getApplicationContext(), LightActivity.class);
+                startActivity(lightActivity);
+                finish();
+            }
+        });*/
 
         this.hygrometry = (Button) findViewById(R.id.hygro) ;
         hygrometry.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +85,7 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
-        this.intruder = (Button) findViewById(R.id.intruder) ;
+      /*  this.intruder = (Button) findViewById(R.id.intruder) ;
         intruder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +93,7 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intruderActivity);
                 finish();
             }
-        });
+        });*/
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -84,19 +104,6 @@ public class MenuActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
-        light.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(MenuActivity.this,"My notification")
-                        .setSmallIcon(R.drawable.food)
-                        .setContentTitle("Test")
-                        .setContentText("Ici s'affichera le cotenu de ma notification")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-
-            }
-        });
 
 
         this.retour = (ImageView) findViewById(R.id.rtn);
