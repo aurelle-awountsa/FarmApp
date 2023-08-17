@@ -38,7 +38,7 @@ public class CameraActivity extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraActivity = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.36.42"));
+                Intent cameraActivity = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.XX.XX"));
                 startActivity(cameraActivity);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("LED_STATUS");
