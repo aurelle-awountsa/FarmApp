@@ -1,7 +1,12 @@
+#include "Firebase_Client_Version.h"
+#if !FIREBASE_CLIENT_VERSION_CHECK(40319)
+#error "Mixed versions compilation."
+#endif
+
 /**
- * Firebase TCP Client v1.2.2
+ * Firebase TCP Client v1.2.7
  *
- * Created January 7, 2023
+ * Created July 10, 2023
  *
  * The MIT License (MIT)
  * Copyright (c) 2023 K. Suwatchai (Mobizt)
@@ -29,13 +34,16 @@
 #define FB_TCP_Client_H
 
 #include <Arduino.h>
-#if (defined(ESP8266) || defined(PICO_RP2040)) && !defined(FB_ENABLE_EXTERNAL_CLIENT)
+#include "mbfs/MB_MCU.h"
+#if (defined(ESP8266) || defined(MB_ARDUINO_PICO)) && !defined(FB_ENABLE_EXTERNAL_CLIENT)
 
 #include <ESP8266WiFi.h>
 #include "FB_Network.h"
 #include "FB_Error.h"
 #include "mbfs/MB_FS.h"
 #include "./wcs/base/FB_TCP_Client_Base.h"
+
+#include "lwip/sockets.h"
 
 class FB_TCP_Client : public FB_TCP_Client_Base
 {
@@ -47,7 +55,7 @@ class FB_TCP_Client : public FB_TCP_Client_Base
   friend class UtilsClass;
 
 public:
-  FB_TCP_Client();
+  FB_TCP_Client(bool initSSLClient = true);
   ~FB_TCP_Client();
 
   void setInsecure();
@@ -70,6 +78,8 @@ public:
 
   int hostByName(const char *name, IPAddress &ip);
 
+  bool connect();
+
   void setTimeout(uint32_t timeoutmSec);
 
   bool begin(const char *host, uint16_t port, int *response_code);
@@ -78,15 +88,17 @@ public:
 
   bool ethLinkUp();
 
+  bool validIP(IPAddress ip);
+
   void ethDNSWorkAround();
 
 private:
-  std::unique_ptr<FB_ESP_SSL_CLIENT> wcs = std::unique_ptr<FB_ESP_SSL_CLIENT>(new FB_ESP_SSL_CLIENT());
+  std::unique_ptr<FB_ESP_SSL_CLIENT> wcs;
 
 #if defined(ESP8266)
   uint16_t bsslRxSize = 4096;
   uint16_t bsslTxSize = 512;
-#elif defined(PICO_RP2040)
+#elif defined(MB_ARDUINO_PICO)
   uint16_t bsslRxSize = 16384;
   uint16_t bsslTxSize = 1024;
 #endif

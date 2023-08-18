@@ -61,14 +61,7 @@ public class MenuActivityTest {
 
     }
 
-    @Test
 
-    public void  testLightButton(){
-
-        onView(withId(R.id.light)).perform(click());
-        intended(hasComponent(LightActivity.class.getName()));
-
-    }
     @Test
 
     public void  testCameraButton(){

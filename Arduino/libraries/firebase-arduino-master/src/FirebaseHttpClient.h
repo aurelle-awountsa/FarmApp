@@ -40,6 +40,6 @@ class FirebaseHttpClient {
 };
 
 static const char kFirebaseFingerprint[] =
-      "04:E0:BD:B0:F8:63:22:3C:3A:19:7D:92:B6:79:2A:44:BF:77:FC:DA"; // 2023-01
+      "BA:24:75:4D:AB:45:63:9E:01:8D:54:6F:2C:D9:E9:30:20:EC:DC:FF"; // 2023-08
 
 #endif  // FIREBASE_HTTP_CLIENT_H

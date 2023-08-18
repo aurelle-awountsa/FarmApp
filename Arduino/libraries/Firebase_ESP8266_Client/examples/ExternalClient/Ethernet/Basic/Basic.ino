@@ -11,13 +11,13 @@
  */
 
 /** This example shows the basic RTDB usage with external Client.
- * This example used ESP32 and WIZnet W5500 (Ethernet) devices which ESP_SSLClient will be used as the external Client.
+ * This example used ESP8266 and WIZnet W5500 (Ethernet) devices which ESP_SSLClient will be used as the external Client.
  *
  * Don't gorget to define this in FirebaseFS.h
  * #define FB_ENABLE_EXTERNAL_CLIENT
  */
 
-#include <FirebaseESP32.h>
+#include <FirebaseESP8266.h>
 
 // Provide the token generation process info.
 #include <addons/TokenHelper.h>
@@ -46,11 +46,11 @@
 #define USER_PASSWORD "USER_PASSWORD"
 
 /* 4. Defined the Ethernet module connection */
-#define WIZNET_RESET_PIN 26 // Connect W5500 Reset pin to GPIO 26 of ESP32
-#define WIZNET_CS_PIN 5     // Connect W5500 CS pin to GPIO 5 of ESP32
-#define WIZNET_MISO_PIN 19  // Connect W5500 MISO pin to GPIO 19 of ESP32
-#define WIZNET_MOSI_PIN 23  // Connect W5500 MOSI pin to GPIO 23 of ESP32
-#define WIZNET_SCLK_PIN 18  // Connect W5500 SCLK pin to GPIO 18 of ESP32
+#define WIZNET_RESET_PIN 5 // Connect W5500 Reset pin to GPIO 5 (D1) of ESP8266
+#define WIZNET_CS_PIN 4    // Connect W5500 CS pin to GPIO 4 (D2) of ESP8266
+#define WIZNET_MISO_PIN 12 // Connect W5500 MISO pin to GPIO 12 (D6) of ESP8266
+#define WIZNET_MOSI_PIN 13 // Connect W5500 MOSI pin to GPIO 13 (D7) of ESP8266
+#define WIZNET_SCLK_PIN 14 // Connect W5500 SCLK pin to GPIO 14 (D5) of ESP8266
 
 /* 5. Define MAC */
 uint8_t Eth_MAC[] = {0x02, 0xF0, 0x0D, 0xBE, 0xEF, 0x01};
@@ -73,13 +73,6 @@ volatile bool dataChanged = false;
 EthernetClient basic_client;
 
 ESP_SSLClient ssl_client;
-
-// For NTP client
-EthernetUDP udpClient;
-
-MB_NTP ntpClient(&udpClient, "pool.ntp.org" /* NTP host */, 123 /* NTP port */, 0 /* timezone offset in seconds */);
-
-uint32_t timestamp = 0;
 
 void ResetEthernet()
 {
@@ -116,7 +109,7 @@ void networkConnection()
     }
     else
     {
-        Serial.println("Can't connected");
+        Serial.println("Can't connect");
     }
 }
 
@@ -125,30 +118,6 @@ void networkStatusRequestCallback()
 {
     // Set the network status
     fbdo.setNetworkStatus(Ethernet.linkStatus() == LinkON);
-}
-
-// Define the callback function to handle server connection
-void tcpConnectionRequestCallback(const char *host, int port)
-{
-
-    // You may need to set the system timestamp to use for
-    // auth token expiration checking.
-
-    if (timestamp == 0)
-    {
-        timestamp = ntpClient.getTime(2000 /* wait 2000 ms */);
-
-        if (timestamp > 0)
-            Firebase.setSystemTime(timestamp);
-    }
-
-    Serial.print("Connecting to server via external Client... ");
-    if (!ssl_client.connect(host, port))
-    {
-        Serial.println("failed.");
-        return;
-    }
-    Serial.println("success.");
 }
 
 void setup()
@@ -185,7 +154,7 @@ void setup()
     fbdo.setExternalClient(&ssl_client);
 
     /* Assign the required callback functions */
-    fbdo.setExternalClientCallbacks(tcpConnectionRequestCallback, networkConnection, networkStatusRequestCallback);
+    fbdo.setExternalClientCallbacks(networkConnection, networkStatusRequestCallback);
 
     // Comment or pass false value when WiFi reconnection will control by your code or third party library
     Firebase.reconnectWiFi(true);

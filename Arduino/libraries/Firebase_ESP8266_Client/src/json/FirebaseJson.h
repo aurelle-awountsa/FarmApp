@@ -1,9 +1,9 @@
 /*
- * FirebaseJson, version 3.0.4
+ * FirebaseJson, version 3.0.7
  *
  * The Easiest Arduino library to parse, create and edit JSON object using a relative path.
  *
- * Created January 6, 2023
+ * Created June 14, 2023
  *
  * Features
  * - Using path to access node element in search style e.g. json.get(result,"a/b/c")
@@ -39,17 +39,65 @@
 #ifndef FirebaseJson_H
 #define FirebaseJson_H
 
+#include <Arduino.h>
+
+#if defined(ESP8266) || defined(ESP32)
+#ifndef MB_ARDUINO_ESP
+#define MB_ARDUINO_ESP
+#endif
+#endif
+
+#if defined(__arm__)
+#ifndef MB_ARDUINO_ARM
+#define MB_ARDUINO_ARM
+#endif
+#endif
+
+#if defined(ARDUINO_ARCH_SAMD)
+#ifndef MB_ARDUINO_ARCH_SAMD
+#define MB_ARDUINO_ARCH_SAMD
+#endif
+#endif
+
+#if defined(ARDUINO_ARCH_RP2040)
+
+#if defined(ARDUINO_NANO_RP2040_CONNECT)
+#ifndef MB_ARDUINO_NANO_RP2040_CONNECT
+#define MB_ARDUINO_NANO_RP2040_CONNECT
+#endif
+#else
+#ifndef MB_ARDUINO_PICO
+#define MB_ARDUINO_PICO
+#endif
+#endif
+
+#endif
+
+#if defined(TEENSYDUINO)
+#ifndef MB_ARDUINO_TEENSY
+#define MB_ARDUINO_TEENSY
+#endif
+#endif
+
 #if defined __has_include
 #if __has_include(<wirish.h>)
 #include <wirish.h>
 #undef min
 #undef max
 #endif
+
+
+#if defined(FIREBASEJSON_USE_FS)
 #if __has_include(<FS.h>)
 
 #if defined(ESP8266)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+#if __has_include(<core_esp8266_version.h>)
+#include <core_esp8266_version.h>
+#endif
+
 #endif
 
 #include <FS.h>
@@ -58,7 +106,8 @@
 #endif
 #endif
 
-#include <Arduino.h>
+#endif
+
 #include <stdio.h>
 #include "MB_List.h"
 
@@ -756,7 +805,7 @@ protected:
     }
 
 #if defined(MB_JSON_FS_H)
-#if defined(PICO_RP2040)
+#if defined(MB_ARDUINO_PICO)
     template <typename T>
     auto toStringHandler(T &out, bool prettify) -> typename MB_ENABLE_IF<MB_IS_SAME<T, fs::File>::value, bool>::type
     {
@@ -792,8 +841,11 @@ protected:
 
     void idle()
     {
-        yield();
+#if defined(ARDUINO_ESP8266_MAJOR) && defined(ARDUINO_ESP8266_MINOR) && defined(ARDUINO_ESP8266_REVISION) && ((ARDUINO_ESP8266_MAJOR == 3 && ARDUINO_ESP8266_MINOR >= 1) || ARDUINO_ESP8266_MAJOR > 3)
+        esp_yield();
+#else
         delay(0);
+#endif
     }
 
     void shrinkS(MB_String &s)
@@ -1307,11 +1359,13 @@ protected:
         while (client->connected() && chunkBufSize == 0 && millis() - dataTime < 5000)
         {
             chunkBufSize = client->available();
-            delay(0);
+            idle();
         }
 
-        if (client->connected())
+        if (client->connected() || client->available())
         {
+            chunkBufSize = client->available();
+
             int availablePayload = chunkBufSize;
 
             dataTime = millis();

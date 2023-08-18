@@ -1,9 +1,14 @@
+#include "Firebase_Client_Version.h"
+#if !FIREBASE_CLIENT_VERSION_CHECK(40319)
+#error "Mixed versions compilation."
+#endif
+
 /**
- * Google's Firebase Data class, FB_Session.h version 1.3.4
+ * Google's Firebase Data class, FB_Session.h version 1.3.10
  *
  * This library supports Espressif ESP8266, ESP32 and RP2040 Pico
  *
- * Created January 6, 2023
+ * Created July 29, 2023
  *
  * This work is a part of Firebase ESP Client library
  * Copyright (c) 2023 K. Suwatchai (Mobizt)
@@ -30,11 +35,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "FirebaseFS.h"
-
 #ifndef FIREBASE_SESSION_H
 #define FIREBASE_SESSION_H
+
 #include <Arduino.h>
+#include "mbfs/MB_MCU.h"
+#include "FirebaseFS.h"
 #include "FB_Utils.h"
 
 #include "rtdb/stream/FB_Stream.h"
@@ -44,6 +50,13 @@
 
 #include "signer/Signer.h"
 
+#if defined(ARDUINO_NANO_RP2040_CONNECT) || defined(ARDUINO_ARCH_SAMD)
+#if __has_include(<WiFiNINA.h>)
+#include <WiFiNINA.h>
+#elif __has_include(<WiFi101.h>)
+#include <WiFi101.h>
+#endif
+#endif
 /**
  * Simple Queue implemented in this library is for error retry only.
  * Other QueueTask management e.g., FreeRTOS Queue is not necessary.
@@ -318,6 +331,14 @@ public:
 
   /** Assign the callback functions required for external Client usage.
    *
+   * @param networkConnectionCB The function that handles the network connection.
+   * @param networkStatusCB The function that handle the network connection status acknowledgement.
+   */
+  void setExternalClientCallbacks(FB_NetworkConnectionRequestCallback networkConnectionCB,
+                                  FB_NetworkStatusRequestCallback networkStatusCB);
+
+  /** Assign the callback functions required for external Client usage (deprecated).
+   *
    * @param tcpConnectionCB The function that handles the server connection.
    * @param networkConnectionCB The function that handles the network connection.
    * @param networkStatusCB The function that handle the network connection status acknowledgement.
@@ -332,7 +353,7 @@ public:
    */
   void setNetworkStatus(bool status);
 
-#if defined(ESP8266) || defined(PICO_RP2040)
+#if defined(ESP8266) || defined(MB_ARDUINO_PICO)
   /** Set the receive and transmit buffer memory size for secured mode BearSSL WiFi client.
    *
    * @param rx The number of bytes for receive buffer memory for secured mode BearSSL (512 is minimum, 16384 is maximum).
@@ -372,7 +393,7 @@ public:
   bool isPause();
 #endif
 
-#if (defined(ESP32) || defined(ESP8266) || defined(PICO_RP2040)) && !defined(FB_ENABLE_EXTERNAL_CLIENT)
+#if (defined(ESP32) || defined(ESP8266) || defined(MB_ARDUINO_PICO)) && !defined(FB_ENABLE_EXTERNAL_CLIENT)
   /** Get a WiFi client instance.
    *
    * @return WiFi client instance.
@@ -506,6 +527,15 @@ public:
    * @return The error description string (String object).
    */
   String errorReason();
+
+  /** Get the error code from the process.
+   *
+   * @return The error code (int).
+   *
+   * See src/FB_Error.h
+   *
+   */
+  int errorCode();
 
   /** Return the integer data of server returned payload (RTDB only).
    *
@@ -748,13 +778,13 @@ public:
     return session.rtdb.blob;
   }
 
-#if defined(MBFS_FLASH_FS)
+#if defined(MBFS_FLASH_FS) && defined(ENABLE_RTDB)
   template <typename T>
   auto to() -> typename enable_if<is_same<T, fs::File>::value, fs::File>::type
   {
     if (session.rtdb.resp_data_type == fb_esp_data_type::d_file)
     {
-      int ret = Signer.mbfs->open(pgm2Str(fb_esp_pgm_str_184 /* "/fb_bin_0.tmp" */),
+      int ret = Signer.mbfs->open(pgm2Str(fb_esp_rtdb_pgm_str_10 /* "/fb_bin_0.tmp" */),
                                   mbfs_type mem_storage_type_flash, mb_fs_open_mode_read);
       if (ret < 0)
         session.response.code = ret;
@@ -884,6 +914,26 @@ public:
    */
   String payload();
 
+  /** Setup TCP KeepAlive for internal TCP client.
+   *
+   * @param tcpKeepIdleSeconds lwIP TCP Keepalive idle in seconds.
+   * @param tcpKeepIntervalSeconds lwIP TCP Keepalive interval in seconds.
+   * @param tcpKeepCount lwIP TCP Keepalive count.
+   * 
+   * For the TCP (KeepAlive) options, see https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/lwip.html#tcp-options.
+   * 
+   * If value of one of these parameters is zero, the TCP KeepAlive will be disabled.
+   * 
+   * You can check the server connecting status, by exexuting <FirebaseData>.httpConnected() which will return true when connection to the server is still alive. 
+   */
+  void keepAlive(int tcpKeepIdleSeconds, int tcpKeepIntervalSeconds, int tcpKeepCount);
+
+   /** Get TCP KeepAlive status.
+   *
+   * @return Boolean status of TCP Keepalive.
+   */
+  bool isKeepAlive();
+
   FB_TCP_CLIENT tcpClient;
 
 #if defined(FIREBASE_ESP32_CLIENT) || defined(FIREBASE_ESP8266_CLIENT)
@@ -963,7 +1013,7 @@ private:
                    struct server_response_data_t &response);
   bool readResponse(MB_String *payload, struct fb_esp_tcp_response_handler_t &tcpHandler,
                     struct server_response_data_t &response);
-  bool prepareDownload(const MB_String &filename, fb_esp_mem_storage_type type);
+  bool prepareDownload(const MB_String &filename, fb_esp_mem_storage_type type, bool openFileInWrireMode = false);
   void prepareDownloadOTA(struct fb_esp_tcp_response_handler_t &tcpHandler, struct server_response_data_t &response);
   void endDownloadOTA(struct fb_esp_tcp_response_handler_t &tcpHandler);
   bool processDownload(const MB_String &filename, fb_esp_mem_storage_type type, uint8_t *buf,
@@ -976,7 +1026,7 @@ private:
                         struct fb_esp_fcs_file_list_item_t *fileitem);
 #endif
 
-#if (defined(ESP32) || defined(PICO_RP2040)) && defined(ENABLE_RTDB)
+#if (defined(ESP32) || defined(MB_ARDUINO_PICO)) && defined(ENABLE_RTDB)
   const char *getTaskName(size_t taskStackSize, bool isStream);
 #endif
 
@@ -997,7 +1047,7 @@ private:
 #endif
 #ifdef ENABLE_RTDB
   void clearQueueItem(QueueItem *item);
-  void sendStreamToCB(int code);
+  void sendStreamToCB(int code, bool report = true);
   void mSetIntValue(const char *value);
   void mSetFloatValue(const char *value);
   void mSetBoolValue(bool value);

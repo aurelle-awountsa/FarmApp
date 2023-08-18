@@ -31,13 +31,12 @@
 
 #include <ESP8266WiFi.h>
 
-
 #include <ENC28J60lwIP.h>
-//#include <W5100lwIP.h>
-//#include <W5500lwIP.h>
+// #include <W5100lwIP.h>
+// #include <W5500lwIP.h>
 
-/** For W5100 ethernet module, uncomment this line in FirebaseFS.h
-  #define ENABLE_ESP8266_W5100_ETH
+/** Don't gorget to define this in FirebaseFS.h
+  #define ENABLE_ESP8266_ENC28J60_ETH
 */
 
 /** For W5100 ethernet module and PlatformIO IDE, please set the lib_ldf_mode in platformio.ini as this
@@ -103,9 +102,15 @@ void setupFirebase()
     config.token_status_callback = tokenStatusCallback; // see addons/TokenHelper.h
 
     /* Assign the pointer to Ethernet module lwip interface */
+#if defined(ENABLE_ESP8266_ENC28J60_ETH)
     config.spi_ethernet_module.enc28j60 = &eth;
-    // config.spi_ethernet_module.w5100 = &eth;
-    // config.spi_ethernet_module.w5500 = &eth;
+#endif
+#if defined(ENABLE_ESP8266_W5100_ETH)
+    config.spi_ethernet_module.w5100 = &eth;
+#endif
+#if defined(ENABLE_ESP8266_W5500_ETH)
+    config.spi_ethernet_module.w5500 = &eth;
+#endif
 
     // Or use legacy authenticate method
     // config.database_url = DATABASE_URL;

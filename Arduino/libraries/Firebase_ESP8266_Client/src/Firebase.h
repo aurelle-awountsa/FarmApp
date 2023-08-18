@@ -1,8 +1,12 @@
+#include "Firebase_Client_Version.h"
+#if !FIREBASE_CLIENT_VERSION_CHECK(40319)
+#error "Mixed versions compilation."
+#endif
 
 /**
- * The Firebase class, Firebase.h v1.2.3
+ * The Firebase class, Firebase.h v1.2.6
  *
- *  Created January 7, 2023
+ *  Created June 14, 2023
  *
  * The MIT License (MIT)
  * Copyright (c) 2023 K. Suwatchai (Mobizt)
@@ -30,18 +34,20 @@
 #define Firebase_H
 
 #include <Arduino.h>
+#include "mbfs/MB_MCU.h"
 
 #include "FirebaseFS.h"
+#include "FB_Const.h"
 
-#if !defined(ESP32) && !defined(ESP8266) && !defined(PICO_RP2040)
+#if !defined(ESP32) && !defined(ESP8266) && !defined(MB_ARDUINO_PICO)
 #ifndef FB_ENABLE_EXTERNAL_CLIENT
 #define FB_ENABLE_EXTERNAL_CLIENT
 #endif
 #endif
 
-#if defined(ESP8266) || defined(ESP32) || defined(FB_ENABLE_EXTERNAL_CLIENT) || defined(PICO_RP2040)
+#if defined(ESP8266) || defined(ESP32) || defined(FB_ENABLE_EXTERNAL_CLIENT) || defined(MB_ARDUINO_PICO)
 
-#if !defined(ESP32) && !defined(ESP8266) && !defined(PICO_RP2040)
+#if !defined(ESP32) && !defined(ESP8266) && !defined(MB_ARDUINO_PICO)
 #ifdef __arm__
 // should use uinstd.h to define sbrk but Due causes a conflict
 extern "C" char *sbrk(int incr);
@@ -95,7 +101,7 @@ class SdSpiConfig;
 #define FPSTR MBSTRING_FLASH_MCR
 #endif
 
-class Firebase_ESP_Client
+class FIREBASE_CLASS
 {
   friend class QueryFilter;
   friend class FirebaseSession;
@@ -120,8 +126,8 @@ public:
   GG_CloudStorage GCStorage;
 #endif
 
-  Firebase_ESP_Client();
-  ~Firebase_ESP_Client();
+  FIREBASE_CLASS();
+  ~FIREBASE_CLASS();
 
   /** Initialize Firebase with the config and Firebase's authentication credentials.
    *
@@ -322,6 +328,12 @@ public:
    */
   void reconnectWiFi(bool reconnect);
 
+  /** Assign UDP client and gmt offset for NTP time synching when using external SSL client
+   * @param client The pointer to UDP client based on the network type.
+   * @param gmtOffset The GMT time offset.
+   */
+  void setUDPClient(UDP *client, float gmtOffset);
+
   /** Get currently used auth token string.
    *
    * @return constant char* of currently used auth token.
@@ -371,12 +383,12 @@ public:
    */
   bool sdBegin(int8_t ss = -1, int8_t sck = -1, int8_t miso = -1, int8_t mosi = -1, uint32_t frequency = 4000000);
 
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(MB_ARDUINO_PICO)
 
   /** Initiate SD card with SD FS configurations (ESP8266 only).
    *
    * @param ss SPI Chip/Slave Select pin.
-   * @param sdFSConfig The pointer to SDFSConfig object (ESP8266 only).
+   * @param sdFSConfig The pointer to SDFSConfig object (ESP8266 and Pico only).
    * @return Boolean type status indicates the success of the operation.
    */
   bool sdBegin(SDFSConfig *sdFSConfig);
@@ -460,9 +472,10 @@ private:
   FirebaseConfig *config = nullptr;
   MB_FS mbfs;
   uint32_t mb_ts = 0;
+  uint32_t mb_ts_offset = 0;
 };
 
-extern Firebase_ESP_Client Firebase;
+extern FIREBASE_CLASS Firebase;
 
 #elif defined(FIREBASE_ESP32_CLIENT) || defined(FIREBASE_ESP8266_CLIENT)
 
@@ -643,7 +656,7 @@ public:
 #ifdef ESP8266
       if (GMTOffset >= -12.0 && GMTOffset <= 14.0)
         _gmtOffset = GMTOffset;
-      TimeHelper::syncClock(mb_ts, _gmtOffset, config);
+      TimeHelper::syncClock(&Signer.ntpClient, mb_ts, mb_ts_offset, _gmtOffset, config);
 #endif
     }
     begin(config, auth);
@@ -664,7 +677,7 @@ public:
 #ifdef ESP8266
       if (GMTOffset >= -12.0 && GMTOffset <= 14.0)
         _gmtOffset = GMTOffset;
-      TimeHelper::syncClock(mb_ts, _gmtOffset, config);
+      TimeHelper::syncClock(&Signer.ntpClient, mb_ts, mb_ts_offset, _gmtOffset, config);
 #endif
     }
     begin(config, auth);
@@ -755,6 +768,12 @@ public:
    * @param reconnect The boolean to set/unset WiFi AP reconnection.
    */
   void reconnectWiFi(bool reconnect);
+
+  /** Assign UDP client and gmt offset for NTP time synching when using external SSL client
+   * @param client The pointer to UDP client based on the network type.
+   * @param gmtOffset The GMT time offset.
+   */
+  void setUDPClient(UDP *client, float gmtOffset);
 
   /** Get currently used auth token string.
    *
@@ -2460,19 +2479,20 @@ public:
    * Call [streamData object].xxxData will return the appropriate data type of
    * the payload returned from the server.
    */
-#if defined(ESP32) || (defined(PICO_RP2040) && defined(ENABLE_PICO_FREE_RTOS))
+#if defined(ESP32) || (defined(MB_ARDUINO_PICO) && defined(ENABLE_PICO_FREE_RTOS))
   void setStreamCallback(FirebaseData &fbdo, FirebaseData::StreamEventCallback dataAvailablecallback,
                          FirebaseData::StreamTimeoutCallback timeoutCallback, size_t streamTaskStackSize = 8192)
   {
     RTDB.setStreamCallback(&fbdo, dataAvailablecallback, timeoutCallback, streamTaskStackSize);
   }
-#elif defined(ESP8266) || defined(PICO_RP2040) || defined(FB_ENABLE_EXTERNAL_CLIENT)
+#elif defined(ESP8266) || defined(MB_ARDUINO_PICO) || defined(FB_ENABLE_EXTERNAL_CLIENT)
   void setStreamCallback(FirebaseData &fbdo, FirebaseData::StreamEventCallback dataAvailablecallback,
                          FirebaseData::StreamTimeoutCallback timeoutCallback = NULL)
   {
     RTDB.setStreamCallback(&fbdo, dataAvailablecallback, timeoutCallback);
   }
 #endif
+
   /** Set the multiple paths stream callback functions.
    * setMultiPathStreamCallback should be called before Firebase.beginMultiPathStream.
    *
@@ -2754,7 +2774,7 @@ public:
    */
   bool sdBegin(int8_t ss = -1, int8_t sck = -1, int8_t miso = -1, int8_t mosi = -1, uint32_t frequency = 4000000);
 
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(MB_ARDUINO_PICO)
 
   /** Initiate SD card with SD FS configurations (ESP8266 only).
    *
@@ -3065,6 +3085,7 @@ private:
   FirebaseConfig *config = nullptr;
   MB_FS mbfs;
   uint32_t mb_ts = 0;
+  uint32_t mb_ts_offset = 0;
   bool extConfig = true;
 };
 

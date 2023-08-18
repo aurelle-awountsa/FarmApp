@@ -5,7 +5,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [0.3.4]
+## [0.3.7] - 2023-06-27
+- add example to measure noise level
+- moved code to .cpp
+- reorder .cpp to match .h
+- removed **callibrate_scale()** (typo ll)
+- add scale == 0 in **set_scale(scale)**
+- changed return type to  **bool set_scale(scale)**
+- add example is_ready
+- add example pulse-length decoder (morse)
+- update readme.md
+
+
+## [0.3.6] - 2023-03-11
+- update readme.md to reference HX711_MP
+
+## [0.3.5] - 2023-03-10
+- update readme.md
+- update GitHub actions
+- update license 2023
+- add MulitMap example
+- minor edits
+
+## [0.3.4] - 2022-11-11
 - simplified changelog
 - add RP2040 to build-CI
 - refactored **set_gain()** to return bool to confirm valid parameter.
@@ -17,7 +39,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - add power_down() power_up() cycle in **reset()**
 - updated readme.md
 - updated keywords.txt
-
 
 ## [0.3.3] - 2022-03-16
 - add HX711_RAW_MODE

@@ -15,7 +15,7 @@
 #elif defined(ESP8266)
 #include <ESP8266WiFi.h>
 #include <FirebaseESP8266.h>
-#elif defined(PICO_RP2040)
+#elif defined(ARDUINO_RASPBERRY_PI_PICO_W)
 #include <WiFi.h>
 #include <FirebaseESP8266.h>
 #endif
@@ -55,6 +55,10 @@ int count = 0;
 
 volatile bool dataChanged = false;
 
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+WiFiMulti multi;
+#endif
+
 void streamCallback(StreamData data)
 {
   Serial.printf("sream path, %s\nevent path, %s\ndata type, %s\nevent type, %s\n\n",
@@ -91,12 +95,23 @@ void setup()
 
   Serial.begin(115200);
 
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+  multi.addAP(WIFI_SSID, WIFI_PASSWORD);
+  multi.run();
+#else
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+#endif
+
   Serial.print("Connecting to Wi-Fi");
+  unsigned long ms = millis();
   while (WiFi.status() != WL_CONNECTED)
   {
     Serial.print(".");
     delay(300);
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+    if (millis() - ms > 10000)
+      break;
+#endif
   }
   Serial.println();
   Serial.print("Connected with IP: ");
@@ -118,6 +133,13 @@ void setup()
   /* Assign the callback function for the long running token generation task */
   config.token_status_callback = tokenStatusCallback; // see addons/TokenHelper.h
 
+  // The WiFi credentials are required for Pico W
+  // due to it does not have reconnect feature.
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+  config.wifi.clearAP();
+  config.wifi.addAP(WIFI_SSID, WIFI_PASSWORD);
+#endif
+
   // Or use legacy authenticate method
   // config.database_url = DATABASE_URL;
   // config.signer.tokens.legacy_token = "<database secret>";
@@ -132,6 +154,12 @@ void setup()
 #if defined(ESP8266)
   stream.setBSSLBufferSize(2048 /* Rx in bytes, 512 - 16384 */, 512 /* Tx in bytes, 512 - 16384 */);
 #endif
+
+  // You can use TCP KeepAlive For more reliable stream operation and tracking the server connection status, please read this for detail.
+  // https://github.com/mobizt/Firebase-ESP8266#enable-tcp-keepalive-for-reliable-http-streaming
+  // You can use keepAlive in ESP8266 core version newer than v3.1.2.
+  // Or you can use git version (v3.1.2) https://github.com/esp8266/Arduino
+  // stream.keepAlive(5, 5, 1);
 
   if (!Firebase.beginStream(stream, "/test/stream/data"))
     Serial.printf("sream begin error, %s\n\n", stream.errorReason().c_str());
@@ -170,7 +198,7 @@ void loop()
 
   // Firebase.ready() should be called repeatedly to handle authentication tasks.
 
-#if defined(PICO_RP2040)
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
   Firebase.runStream();
 #endif
 
@@ -189,4 +217,19 @@ void loop()
     dataChanged = false;
     // When stream data is available, do anything here...
   }
+
+  // After calling stream.keepAlive, now we can track the server connecting status
+  if (!stream.httpConnected())
+  {
+    // Server was disconnected!
+  }
 }
+
+// To pause stream
+// stream.pauseFirebase(true);
+// stream.clear(); // close session and release memory
+
+
+// To resume stream with callback
+// stream.pauseFirebase(false);
+// Firebase.setStreamCallback(stream, streamCallback, streamTimeoutCallback);

@@ -1,14 +1,20 @@
+#include "Firebase_Client_Version.h"
+#if !FIREBASE_CLIENT_VERSION_CHECK(40319)
+#error "Mixed versions compilation."
+#endif
+
 /**
- * Created January 7, 2023
+ * Created April 5, 2023
  */
 
 #ifndef FB_Network_H
 #define FB_Network_H
 
 #include <Arduino.h>
+#include "mbfs/MB_MCU.h"
 #include "FirebaseFS.h"
 
-#if !defined(ESP32) && !defined(ESP8266) && !defined(PICO_RP2040)
+#if !defined(ESP32) && !defined(ESP8266) && !defined(MB_ARDUINO_PICO)
 #ifndef FB_ENABLE_EXTERNAL_CLIENT
 #define FB_ENABLE_EXTERNAL_CLIENT
 #endif
@@ -17,14 +23,16 @@
 #if defined(ESP32)
 #include <WiFi.h>
 #include <WiFiClient.h>
+#if !defined(FB_ENABLE_EXTERNAL_CLIENT)
 #include <ETH.h>
+#endif
 #include <WiFiClientSecure.h>
 #if __has_include(<esp_idf_version.h>)
 #include <esp_idf_version.h>
 #endif
 #endif
 
-#if defined(ESP8266) || defined(PICO_RP2040)
+#if defined(ESP8266) || defined(MB_ARDUINO_PICO)
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <CertStoreBearSSL.h>
@@ -56,11 +64,11 @@
 
 #if defined __has_include
 
-#if __has_include(<LwipIntfDev.h>)
+#if __has_include(<LwipIntfDev.h>) && (defined(ENABLE_ESP8266_ENC28J60_ETH) || defined(ENABLE_ESP8266_W5500_ETH) || defined(ENABLE_ESP8266_W5500_ETH))
 #include <LwipIntfDev.h>
 #endif
 
-#if __has_include(<ENC28J60lwIP.h>)
+#if __has_include(<ENC28J60lwIP.h>) && defined(ENABLE_ESP8266_ENC28J60_ETH)
 #define INC_ENC28J60_LWIP
 #include <ENC28J60lwIP.h>
 #endif
@@ -73,7 +81,7 @@
 #include <W5100lwIP.h>
 #endif
 
-#if __has_include(<W5500lwIP.h>)
+#if __has_include(<W5500lwIP.h>) && defined(ENABLE_ESP8266_W5500_ETH)
 #define INC_W5500_LWIP
 #include <W5500lwIP.h>
 #endif

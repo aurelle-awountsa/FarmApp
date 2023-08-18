@@ -1,7 +1,12 @@
+#include "Firebase_Client_Version.h"
+#if !FIREBASE_CLIENT_VERSION_CHECK(40319)
+#error "Mixed versions compilation."
+#endif
+
 /*
- * TCP Client Base class, version 1.0.8
+ * TCP Client Base class, version 1.0.10
  *
- * Created November 10, 2022
+ * Created June 9, 2023
  *
  * The MIT License (MIT)
  * Copyright (c) 2023 K. Suwatchai (Mobizt)
@@ -29,6 +34,7 @@
 #define FB_TCP_CLIENT_BASE_H
 
 #include <Arduino.h>
+#include "mbfs/MB_MCU.h"
 #include "FB_Utils.h"
 #include <IPAddress.h>
 #include <Client.h>
@@ -114,6 +120,7 @@ public:
         if (connected())
             return true;
 
+        lastConnMillis = millis();
         if (!client->connect(host.c_str(), port))
             return setError(FIREBASE_ERROR_TCP_ERROR_CONNECTION_REFUSED);
 
@@ -139,7 +146,7 @@ public:
     }
 
     virtual int write(uint8_t *data, int len)
-    {       
+    {
         if (!data || !client)
             return setError(FIREBASE_ERROR_TCP_ERROR_SEND_REQUEST_FAILED);
 
@@ -150,7 +157,10 @@ public:
             return setError(FIREBASE_ERROR_TCP_ERROR_NOT_CONNECTED);
 
         // call base or derived connect.
-        if (!connected() && !connect())
+        if (!connected() && (lastConnMillis == 0 || millis() - lastConnMillis > connTimeout))
+            connect();
+
+        if (!connected())
             return setError(FIREBASE_ERROR_TCP_ERROR_CONNECTION_REFUSED);
 
         int res = client->write(data, len);
@@ -257,6 +267,18 @@ public:
 
     fb_cert_type getCertType() { return certType; }
 
+    void keepAlive(int tcpKeepIdleSeconds, int tcpKeepIntervalSeconds, int tcpKeepCount)
+    {
+#if defined(USE_CONNECTION_KEEP_ALIVE_MODE)
+        this->tcpKeepIdleSeconds = tcpKeepIdleSeconds;
+        this->tcpKeepIntervalSeconds = tcpKeepIntervalSeconds;
+        this->tcpKeepCount = tcpKeepCount;
+        isKeepAlive = tcpKeepIdleSeconds > 0 && tcpKeepIntervalSeconds > 0 && tcpKeepCount > 0;
+#endif
+    }
+
+    bool isKeepAliveSet() { return tcpKeepIdleSeconds > -1 && tcpKeepIntervalSeconds > -1 && tcpKeepCount > -1; };
+
 private:
     void setConfig(FirebaseConfig *config, MB_FS *mbfs)
     {
@@ -281,6 +303,19 @@ protected:
     unsigned long dataStart = 0;
     unsigned long dataTime = 0;
     MB_FS *mbfs = nullptr;
+    unsigned long lastConnMillis = 0;
+    unsigned long connTimeout = 1000;
+
+    // lwIP TCP Keepalive idle in seconds.
+    int tcpKeepIdleSeconds = -1;
+
+    // lwIP TCP Keepalive interval in seconds.
+    int tcpKeepIntervalSeconds = -1;
+
+    // lwIP TCP Keepalive count.
+    int tcpKeepCount = -1;
+
+    bool isKeepAlive = false;
 
     // In esp8266, this is actually Arduino base Stream (char read) timeout.
     //  This will override internally by WiFiClientSecureCtx::_connectSSL
