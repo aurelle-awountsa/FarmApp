@@ -17,6 +17,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/top_background"
         tools:ignore="MissingConstraints" />
+
     <ImageView
         android:id="@+id/rtr1"
         android:layout_width="70dp"
@@ -29,6 +30,7 @@
         app:layout_constraintVertical_bias="0.142"
         app:srcCompat="@drawable/rtn"
         tools:ignore="MissingConstraints" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="132dp"
@@ -41,6 +43,7 @@
         app:layout_constraintVertical_bias="0.139"
         app:srcCompat="@drawable/camera"
         tools:ignore="DuplicateIds" />
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="286dp"
@@ -58,16 +61,33 @@
         tools:ignore="HardcodedText,MissingConstraints" />
 
     <Button
-        android:id="@+id/video"
+        android:id="@+id/videoIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Video de surveillance"
+        android:text="Video de surveillance interne"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        tools:background="@color/material_dynamic_primary70"
+        app:layout_constraintVertical_bias="0.571"
+        tools:background="#1B4B61"
+        tools:ignore="InvalidId,MissingConstraints" />
+
+    <Button
+        android:id="@+id/videoOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Video de surveillance externe"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="0.333"
+        tools:background="#1B4B61"
         tools:ignore="InvalidId,MissingConstraints" />
 
 

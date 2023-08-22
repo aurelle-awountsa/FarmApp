@@ -14,7 +14,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CameraActivity extends AppCompatActivity {
     ImageView retour;
-    Button camera;
+    Button camera1;
+    Button camera2;
+
     DatabaseReference myRef;
 
 
@@ -34,8 +36,8 @@ public class CameraActivity extends AppCompatActivity {
             }
 
         });
-        this.camera = (Button) findViewById(R.id.video) ;
-        camera.setOnClickListener(new View.OnClickListener() {
+        this.camera1 = (Button) findViewById(R.id.videoIn) ;
+        camera1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent cameraActivity = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.XX.XX"));
@@ -43,6 +45,16 @@ public class CameraActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("LED_STATUS");
                 myRef.setValue(1);
+                finish();
+            }
+        });
+
+        this.camera2 = (Button) findViewById(R.id.videoOut) ;
+        camera2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cameraActivity = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.XX.XX"));
+                startActivity(cameraActivity);
                 finish();
             }
         });
