@@ -46,17 +46,15 @@ void loop()
  
   weight = scale.get_units(5); // moyenne de 5 mesure
   
-  if(weight >= 0.5 ){
+  if(weight <= 0.5 ){
     float foodRemain, foodInit = 5; //ces variables sont respectivement la quantité de nourriture restante et la quantité initiale
     int foodGive = 0;   // le nombre de fois que le servo moteur s'activera pour remplir les mangeoires
 
-      myservo.write(0);
-      Serial.println("servo 0");
-      delay(20000); // au bout de 2minutes, le poids de nourriture dans la mangeoire est de 2 kg
       myservo.write(180);
-      Serial.println("servo 180");
+      delay(20000); // au bout de 2minutes, le poids de nourriture dans la mangeoire est de 2 kg
+      myservo.write(0);
       foodGive += 1;
-      foodRemain = foodInit - (2-0.2) * foodGive;
+      foodRemain = foodInit - (2-0.5) * foodGive;
       Firebase.setString("foodRemain", " la quantité de nouriture restante est de " + String(foodRemain) + " kg");
 
       return;
